@@ -23,13 +23,11 @@ class _AccesoGpsPageState extends State<AccesoGpsPage>
   @override
   void dispose() {
     WidgetsBinding.instance?.removeObserver(this);
-    // TODO: implement dispose
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    print(state);
     /* nuevamente entra al app */
     if (state == AppLifecycleState.resumed) {
       /* validar si tenmos acceso */
@@ -62,7 +60,6 @@ class _AccesoGpsPageState extends State<AccesoGpsPage>
 
   void onPressAcces() async {
     final status = await Permission.location.request();
-    print(status);
     switch (status) {
       case PermissionStatus.granted:
         // openAppSettings();
@@ -71,10 +68,8 @@ class _AccesoGpsPageState extends State<AccesoGpsPage>
       case PermissionStatus.restricted:
       case PermissionStatus.permanentlyDenied:
       case PermissionStatus.denied:
-        openAppSettings();
-        break;
       case PermissionStatus.limited:
-        // TODO: Handle this case.
+        openAppSettings();
         break;
     }
   }
