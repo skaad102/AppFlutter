@@ -38,6 +38,7 @@ dependencies:
   permission_handler:
   flutter_bloc:
   http:
+  google_maps_flutter :
 
 
 dev_dependencies:
