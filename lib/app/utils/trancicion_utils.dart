@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rutas_app/app/ui/pages/acceso_page.dart';
-import 'package:rutas_app/app/ui/pages/loading_page.dart';
 import 'package:rutas_app/app/ui/pages/mapa_page.dart';
 
 Future transicionPage(BuildContext context, Widget page) async {
