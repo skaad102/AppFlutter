@@ -21,6 +21,9 @@ class ColorTheme {
           backgroundColor: MaterialStateProperty.all<Color>(primary),
         ),
       ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: tercery,
+      ),
     );
   }
 }
