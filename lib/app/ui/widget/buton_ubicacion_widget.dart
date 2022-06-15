@@ -9,24 +9,18 @@ class BtnLocation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            CircleAvatar(
-              child: FloatingActionButton(
-                  onPressed: () {
-                    final positionCurrent =
-                        context.read<MiUbicacionBloc>().state.ubicacion;
-                    context
-                        .read<MapaBloc>()
-                        .moveCurrentPosition(positionCurrent);
-                  },
-                  child: const Icon(
-                    Icons.location_on,
-                  )),
-            )
-          ],
-        ));
+      padding: const EdgeInsets.all(8),
+      child: CircleAvatar(
+        child: FloatingActionButton(
+            onPressed: () {
+              final positionCurrent =
+                  context.read<MiUbicacionBloc>().state.ubicacion;
+              context.read<MapaBloc>().moveCurrentPosition(positionCurrent);
+            },
+            child: const Icon(
+              Icons.location_on,
+            )),
+      ),
+    );
   }
 }
