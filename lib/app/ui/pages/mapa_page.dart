@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rutas_app/app/services/bloc/mapa/mapa_bloc.dart';
 import 'package:rutas_app/app/services/bloc/mi_ubicacion/mi_ubicacion_bloc.dart';
+import 'package:rutas_app/app/ui/widget/buton_seguir.dart';
 
+import '../widget/buton_ocultar_ubicacion.dart';
 import '../widget/buton_ubicacion_widget.dart';
 
 class MapaPage extends StatefulWidget {
@@ -34,7 +36,14 @@ class _MapaPageState extends State<MapaPage> {
             return printMap(state);
           },
         ),
-        floatingActionButton: BtnLocation(),
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            BtnLocation(),
+            BtnFollow(),
+            BtnShowLocation(),
+          ],
+        ),
       ),
     );
   }
@@ -53,14 +62,25 @@ class _MapaPageState extends State<MapaPage> {
       zoom: 16,
     );
 
+    final blocMapa = BlocProvider.of<MapaBloc>(context);
+    // final blocMapa = context.read<MapaBloc>();
+
+    blocMapa.add(MarcarRuta(state.ubicacion!));
+    print(state.ubicacion!);
+
     return GoogleMap(
       initialCameraPosition: initialCameraPosition,
       zoomControlsEnabled: false,
       myLocationButtonEnabled: false,
       myLocationEnabled: true,
       mapType: MapType.normal,
+      polylines: blocMapa.state.polylines!.values.toSet(),
       onMapCreated: (GoogleMapController controller) {
-        context.read<MapaBloc>().initMapaBloc(controller);
+        blocMapa.initMapaBloc(controller);
+      },
+      onCameraMove: (cameraPosition) {
+        final centroMapa = cameraPosition.target;
+        blocMapa.add(MoverMapa(centroMapa));
       },
     );
   }
