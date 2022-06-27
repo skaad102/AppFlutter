@@ -12,6 +12,7 @@ class BtnLocation extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       child: CircleAvatar(
         child: FloatingActionButton(
+            heroTag: 'btn_location',
             onPressed: () {
               final positionCurrent =
                   context.read<MiUbicacionBloc>().state.ubicacion;

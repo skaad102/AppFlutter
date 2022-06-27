@@ -12,6 +12,7 @@ class BtnShowLocation extends StatelessWidget {
           children: [
             CircleAvatar(
               child: FloatingActionButton(
+                  heroTag: 'btn_show_location',
                   onPressed: () {
                     context.read<MapaBloc>().add(DesmarcarRuta());
                   },

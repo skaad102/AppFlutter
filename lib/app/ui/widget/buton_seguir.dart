@@ -15,6 +15,7 @@ class BtnFollow extends StatelessWidget {
               children: [
                 CircleAvatar(
                   child: FloatingActionButton(
+                    heroTag: 'btn_follow',
                     onPressed: () {
                       bloc.add(SeguirRuta());
                     },
