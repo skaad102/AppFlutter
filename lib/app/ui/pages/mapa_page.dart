@@ -53,7 +53,7 @@ class _MapaPageState extends State<MapaPage> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [Text('Buscando..'), CircularProgressIndicator()],
+        children: const [Text('Buscando..'), CircularProgressIndicator()],
       );
     }
 
@@ -66,7 +66,6 @@ class _MapaPageState extends State<MapaPage> {
     // final blocMapa = context.read<MapaBloc>();
 
     blocMapa.add(MarcarRuta(state.ubicacion!));
-    print(state.ubicacion!);
 
     return GoogleMap(
       initialCameraPosition: initialCameraPosition,

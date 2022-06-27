@@ -61,7 +61,6 @@ class MapaBloc extends Bloc<MapaEvent, MapaStateInitial> {
         emit(state.copyWith(
           ubicacionCentral: event.centroMapa,
         ));
-        print("MoverMapa ${event.centroMapa}");
       },
     );
   }
