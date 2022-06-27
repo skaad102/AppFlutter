@@ -13,7 +13,7 @@ class MapaBloc extends Bloc<MapaEvent, MapaStateInitial> {
   Polyline _ruta = const Polyline(
     polylineId: PolylineId("ruta"),
     width: 3,
-    color: Colors.black,
+    color: Colors.transparent,
   );
   void initMapaBloc(GoogleMapController controller) {
     if (!state.mapaListo) {
@@ -80,7 +80,7 @@ class MapaBloc extends Bloc<MapaEvent, MapaStateInitial> {
 
   void _desmarcarUnicacion(
       DesmarcarRuta event, Emitter<MapaStateInitial> emit) {
-    state.dibujarRuta
+    !state.dibujarRuta
         ? _ruta = _ruta.copyWith(colorParam: Colors.transparent)
         : _ruta = _ruta.copyWith(colorParam: Colors.black);
     final polylinesActuales = state.polylines;

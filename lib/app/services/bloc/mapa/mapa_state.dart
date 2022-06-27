@@ -10,7 +10,7 @@ class MapaStateInitial {
   /* TODO : Refact */
   MapaStateInitial(
       {this.mapaListo = false,
-      this.dibujarRuta = true,
+      this.dibujarRuta = false,
       this.seguirRuta = false,
       this.ubicacionCentral = const LatLng(0, 0),
       Map<String, Polyline>? polylines})
