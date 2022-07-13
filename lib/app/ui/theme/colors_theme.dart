@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ColorTheme {
-  static Color primary = const Color(0xFF00b894);
+  static Color primary = Color.fromARGB(255, 0, 184, 147);
   static Color secundary = const Color(0xFF00cec9);
   static Color tercery = const Color(0xFF0984e3);
   static Color background = const Color(0xFF6c5ce7);
@@ -24,6 +24,7 @@ class ColorTheme {
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: tercery,
       ),
+      iconTheme: IconThemeData(color: secundary),
     );
   }
 }
