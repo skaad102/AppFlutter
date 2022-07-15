@@ -7,6 +7,8 @@ import 'package:rutas_app/app/ui/widget/buton_seguir.dart';
 
 import '../widget/buton_ocultar_ubicacion.dart';
 import '../widget/buton_ubicacion_widget.dart';
+import '../widget/icon_route_widget.dart';
+import '../widget/serbar_widget.dart';
 
 class MapaPage extends StatefulWidget {
   @override
@@ -31,11 +33,17 @@ class _MapaPageState extends State<MapaPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: BlocBuilder<MiUbicacionBloc, MiUbicacionStateInicial>(
-          builder: (_, state) {
-            return printMap(state);
-          },
-        ),
+        body: Stack(children: [
+          BlocBuilder<MiUbicacionBloc, MiUbicacionStateInicial>(
+            builder: (_, state) {
+              return printMap(state);
+            },
+          ),
+          /* Buscador de rutas */
+          const SearchBar(),
+          /* pintar el resultado serarch */
+          const IconRoute(),
+        ]),
         floatingActionButton: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
