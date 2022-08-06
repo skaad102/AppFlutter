@@ -18,3 +18,10 @@ class MoverMapa extends MapaEvent {
   final LatLng centroMapa;
   MoverMapa(this.centroMapa);
 }
+
+class CrearRutaInicioDestino extends MapaEvent {
+  final List<LatLng> coordenas;
+  final double distancia;
+  final double tiempo;
+  CrearRutaInicioDestino(this.coordenas, this.distancia, this.tiempo);
+}

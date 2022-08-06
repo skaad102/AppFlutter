@@ -15,6 +15,11 @@ class MapaBloc extends Bloc<MapaEvent, MapaStateInitial> {
     width: 3,
     color: Colors.transparent,
   );
+  Polyline _rutaInicioDestino = const Polyline(
+    polylineId: PolylineId("ruta_inicio_destino"),
+    width: 3,
+    color: Colors.white60,
+  );
   void initMapaBloc(GoogleMapController controller) {
     if (!state.mapaListo) {
       _mapController = controller;
@@ -29,40 +34,33 @@ class MapaBloc extends Bloc<MapaEvent, MapaStateInitial> {
   }
 
   MapaBloc() : super(MapaStateInitial()) {
-    on<MapaListo>(
-      (event, emit) {
-        emit(MapaStateInitial(
-          mapaListo: true,
-        ));
-      },
-    );
-    on<MarcarRuta>(
-      (event, emit) {
-        _marcarUnicacion(event, emit);
-      },
-    );
+    on<MapaListo>((event, emit) {
+      emit(MapaStateInitial(
+        mapaListo: true,
+      ));
+    });
+    on<MarcarRuta>((event, emit) {
+      _marcarUnicacion(event, emit);
+    });
 
-    on<DesmarcarRuta>(
-      (event, emit) {
-        _desmarcarUnicacion(event, emit);
-      },
-    );
+    on<DesmarcarRuta>((event, emit) {
+      _desmarcarUnicacion(event, emit);
+    });
 
-    on<SeguirRuta>(
-      (event, emit) {
-        _seguirRuta(event, emit);
-      },
-    );
-    on<MoverMapa>(
-      (event, emit) {
-        // emit(MapaStateInitial(
-        //   ubicacionCentral: event.centroMapa,
-        // ));
-        emit(state.copyWith(
-          ubicacionCentral: event.centroMapa,
-        ));
-      },
-    );
+    on<SeguirRuta>((event, emit) {
+      _seguirRuta(event, emit);
+    });
+    on<MoverMapa>((event, emit) {
+      // emit(MapaStateInitial(
+      //   ubicacionCentral: event.centroMapa,
+      // ));
+      emit(state.copyWith(
+        ubicacionCentral: event.centroMapa,
+      ));
+    });
+    on<CrearRutaInicioDestino>((event, emit) {
+      _crearRutaInicioDestino(event, emit);
+    });
   }
 
   void _marcarUnicacion(MarcarRuta event, Emitter<MapaStateInitial> emit) {
@@ -92,5 +90,17 @@ class MapaBloc extends Bloc<MapaEvent, MapaStateInitial> {
 
   void _seguirRuta(SeguirRuta event, Emitter<MapaStateInitial> emit) {
     emit(state.copyWith(seguirRuta: !state.seguirRuta));
+  }
+
+  void _crearRutaInicioDestino(
+      CrearRutaInicioDestino event, Emitter<MapaStateInitial> emit) {
+    _rutaInicioDestino = _rutaInicioDestino.copyWith(
+      pointsParam: event.coordenas,
+    );
+    final polylinesActuales = state.polylines;
+    polylinesActuales?['ruta_inicio_destino'] = _rutaInicioDestino;
+    emit(state.copyWith(
+      polylines: polylinesActuales,
+    ));
   }
 }

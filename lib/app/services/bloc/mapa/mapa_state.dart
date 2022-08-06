@@ -4,10 +4,9 @@ class MapaStateInitial {
   final bool mapaListo;
   final bool dibujarRuta;
   final bool seguirRuta;
-  final LatLng ubicacionCentral;
+  final LatLng? ubicacionCentral;
   final Map<String, Polyline>? polylines;
 
-  /* TODO : Refact */
   MapaStateInitial(
       {this.mapaListo = false,
       this.dibujarRuta = false,
