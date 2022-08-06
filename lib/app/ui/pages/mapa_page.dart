@@ -61,7 +61,10 @@ class _MapaPageState extends State<MapaPage> {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: const [Text('Buscando..'), CircularProgressIndicator()],
+        children: const [
+          Center(child: Text('Buscando..')),
+          CircularProgressIndicator()
+        ],
       );
     }
 
@@ -75,19 +78,23 @@ class _MapaPageState extends State<MapaPage> {
 
     blocMapa.add(MarcarRuta(state.ubicacion!));
 
-    return GoogleMap(
-      initialCameraPosition: initialCameraPosition,
-      zoomControlsEnabled: false,
-      myLocationButtonEnabled: false,
-      myLocationEnabled: true,
-      mapType: MapType.normal,
-      polylines: blocMapa.state.polylines!.values.toSet(),
-      onMapCreated: (GoogleMapController controller) {
-        blocMapa.initMapaBloc(controller);
-      },
-      onCameraMove: (cameraPosition) {
-        final centroMapa = cameraPosition.target;
-        blocMapa.add(MoverMapa(centroMapa));
+    return BlocBuilder<MapaBloc, MapaStateInitial>(
+      builder: (context, _) {
+        return GoogleMap(
+          initialCameraPosition: initialCameraPosition,
+          zoomControlsEnabled: false,
+          myLocationButtonEnabled: false,
+          myLocationEnabled: true,
+          mapType: MapType.normal,
+          polylines: blocMapa.state.polylines!.values.toSet(),
+          onMapCreated: (GoogleMapController controller) {
+            blocMapa.initMapaBloc(controller);
+          },
+          onCameraMove: (cameraPosition) {
+            final centroMapa = cameraPosition.target;
+            blocMapa.add(MoverMapa(centroMapa));
+          },
+        );
       },
     );
   }
