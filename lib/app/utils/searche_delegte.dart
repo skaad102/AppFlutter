@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../model/search_model.dart';
 import '../services/bloc/busqueda/busqueda_bloc.dart';
 
