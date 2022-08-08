@@ -1,27 +1,13 @@
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'dart:async';
+
+import 'package:google_maps_flutter/google_maps_flutter.dart' show LatLng;
 import 'package:http/http.dart' as http;
 
 import '../../model/ruta_point.dart';
+import '../../model/search_gecoding.dart';
+import '../../utils/debouncer.dart';
 
 class RutaPointApi {
-  // List rutaPoint = [];
-  // final _api =
-  //     "https://api.mapbox.com/directions/v5/mapbox/driving/-72.39637103515008%2C5.334529615384454%3B-72.37597663303053%2C5.325208215136499?alternatives=true&geometries=polyline6&overview=simplified&steps=false&access_token=pk.eyJ1Ijoic2thYWQxMDIiLCJhIjoiY2w0aWx1ZnJzMGF1NjNjbGk4ZTkxZWw1bCJ9.qR11xCh2oXBCvyLdmjwlNg&language=es ";
-  // Future getRutaPoint() async {
-  //   final url = Uri.parse(_api);
-  //   try {
-  //     final response = await http.get(url);
-  //     print(response.statusCode);
-  //     if (response.statusCode == 200) {
-  //       final data = rutaPointFromJson(response.body);
-  //       print(data);
-  //       final data2 = RutaPoint.fromJson(jsonDecode(response.body));
-  //       print("data2: ${data2.routes}");
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
   /* Creacion del singelton
     RutaPointApi rutaPointApi = RutaPointApi();
     simepre es la misma instancia de la clase
@@ -30,9 +16,17 @@ class RutaPointApi {
   static final RutaPointApi _instance = RutaPointApi._privateConstructor();
   factory RutaPointApi() => _instance;
 
+  final debouncer =
+      Debouncer<String>(duration: const Duration(milliseconds: 500));
   final _baseUrl = "api.mapbox.com";
   final _apiKey =
       "pk.eyJ1Ijoic2thYWQxMDIiLCJhIjoiY2w0aWxyOGVyMGd4bzNkazdjM2FwcnVqMSJ9.KMSVvRax_KNIRjPj5Vy3Kg";
+
+  /* strem para disparar la busqueda programada 1/2 seg */
+  StreamController<SearchGeocoding> _streamControllerGeo =
+      StreamController<SearchGeocoding>.broadcast();
+
+  Stream<SearchGeocoding> get stream => _streamControllerGeo.stream;
 
   Future<RutaPoint> getInicioDestino(LatLng inicio, LatLng destino) async {
     final cordenadas =
@@ -63,12 +57,49 @@ class RutaPointApi {
       throw Exception("Error al obtener la ruta");
     }
   }
+
+  Future<SearchGeocoding> getDirections(LatLng hubicacion, String query) async {
+    try {
+      final url =
+          Uri.https(_baseUrl, "geocoding/v5/mapbox.places/$query.json", {
+        "access_token": _apiKey,
+        "language": "es",
+        "limit": "3",
+        "proximity": "${hubicacion.longitude},${hubicacion.latitude}",
+        "autocomplete": "true"
+      });
+
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final data = searchGeocodingFromJson(response.body);
+        return data;
+      } else {
+        throw Exception("Error al obtener listado de direcciones");
+      }
+    } catch (e) {
+      return SearchGeocoding(
+          type: "FeatureCollection",
+          query: [""],
+          features: [],
+          attribution: "");
+    }
+  }
+
+  void getSugerenciasPorQuery(
+    LatLng proximidad,
+    String busqueda,
+  ) {
+    debouncer.value = '';
+    debouncer.onValue = (value) async {
+      final resultados = await getDirections(proximidad, value);
+      _streamControllerGeo.add(resultados);
+    };
+
+    final timer = Timer.periodic(const Duration(milliseconds: 200), (_) {
+      debouncer.value = busqueda;
+    });
+
+    Future.delayed(const Duration(milliseconds: 201))
+        .then((_) => timer.cancel());
+  }
 }
-
-
-/* https://api.mapbox.com/directions/v5/mapbox/driving/-73.98660439230984%2C40.73395334763842%3B-73.9842891121566%2C40.73302015046892?alternatives=true&geometries=geojson&language=en&overview=simplified&steps=true&access_token=pk.eyJ1Ijoic2thYWQxMDIiLCJhIjoiY2w0aWxyOGVyMGd4bzNkazdjM2FwcnVqMSJ9.KMSVvRax_KNIRjPj5Vy3Kg 
-
-https://api.mapbox.com/directions/v5/mapbox/driving/?access_token=pk.eyJ1Ijoic2thYWQxMDIiLCJhIjoiY2w0aWxyOGVyMGd4bzNkazdjM2FwcnVqMSJ9.KMSVvRax_KNIRjPj5Vy3Kg&coordinates=5.3343861%2C-72.3970431%3B5.333832042293373%2C-72.39593502134083&overview=simplified&steps=false&alternatives=true&geometries=polyline6&language=es
-
-https://api.mapbox.com/directions/v5/mapbox/driving/5.334385,-72.3970381;5.3373211647405485,-72.39098634570838?access_token=pk.eyJ1Ijoic2thYWQxMDIiLCJhIjoiY2w0aWxyOGVyMGd4bzNkazdjM2FwcnVqMSJ9.KMSVvRax_KNIRjPj5Vy3Kg&overview=simplified&steps=false&alternatives=true&geometries=polyline6&language=es
-*/
