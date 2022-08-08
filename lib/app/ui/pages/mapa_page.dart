@@ -19,7 +19,6 @@ class _MapaPageState extends State<MapaPage> {
   @override
   void initState() {
     context.read<MiUbicacionBloc>().iniciarSeguimiento();
-    // TODO: implement initState
     super.initState();
   }
 

@@ -9,10 +9,10 @@ Future transicionPage(BuildContext context, Widget page) async {
   final gpsActive = await Geolocator.isLocationServiceEnabled();
 
   if (permisoGps && gpsActive && (page is MapaPage)) {
-    navegador_copy(context, page);
+    navegadorCopy(context, page);
     return "";
   } else if (!permisoGps) {
-    navegador_copy(context, AccesoGpsPage());
+    navegadorCopy(context, AccesoGpsPage());
 
     return "necesario permitir gps";
   } else {
@@ -20,7 +20,7 @@ Future transicionPage(BuildContext context, Widget page) async {
   }
 }
 
-void navegador_copy(BuildContext context, Widget page) {
+void navegadorCopy(BuildContext context, Widget page) {
   Navigator.pushReplacement(
       context,
       PageRouteBuilder(

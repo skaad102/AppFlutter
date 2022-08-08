@@ -42,7 +42,6 @@ class _LoadingPageState extends State<LoadingPage> with WidgetsBindingObserver {
           if (snapshot.data != null) {
             return Center(child: Text(snapshot.data));
           } else {
-            /* TODO: no hace una mierda */
             return Container(
               color: ColorTheme.background,
               child: Center(

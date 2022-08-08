@@ -26,6 +26,7 @@ class SearchBar extends StatelessWidget {
   }
 
   Widget buildBody(BuildContext context) {
+    // final ubicacion = context.read<MiUbicacionBloc>().state.ubicacion;
     double width = MediaQuery.of(context).size.width;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),

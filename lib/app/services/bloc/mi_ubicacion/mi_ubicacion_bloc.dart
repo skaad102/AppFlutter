@@ -29,7 +29,7 @@ class MiUbicacionBloc extends Bloc<MiUbicacionEvent, MiUbicacionStateInicial> {
     getPositionStream.cancel();
   }
 
-  MiUbicacionBloc() : super(MiUbicacionStateInicial()) {
+  MiUbicacionBloc() : super(const MiUbicacionStateInicial()) {
     on<UbicacionCambio>((event, emit) {
       emit(state.copyWith(
         existeUbicacion: true,
