@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:rutas_app/app/models/game_model.dart';
+import 'package:rutas_app/app/services/key_services.dart';
 
 class GameBoard extends StatefulWidget {
-  WordleGameModel gameModel;
-  GameBoard(this.gameModel, {Key? key}) : super(key: key);
+  GameBoard({Key? key}) : super(key: key);
 
   @override
   State<GameBoard> createState() => _GameBoardState();
 }
 
 class _GameBoardState extends State<GameBoard> {
+  final _wordleGameModel = keyService.gameModel;
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children:
-          widget.gameModel.wordleBoard.map((e) => RowWordlRandom(e)).toList(),
-    );
+    return StreamBuilder<WordleGameModel>(
+        stream: keyService.keyStrem,
+        builder: (context, snapshot) {
+          return Column(
+            children: _wordleGameModel.wordleBoard
+                .map((e) => RowWordlRandom(e))
+                .toList(),
+          );
+        });
   }
 }
 
@@ -25,7 +32,6 @@ class RowWordlRandom extends StatelessWidget {
     this.e, {
     Key? key,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Row(
