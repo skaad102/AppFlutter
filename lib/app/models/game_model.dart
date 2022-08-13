@@ -1,12 +1,14 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:math';
 
 class WordleGameModel {
-  int _rowId = 0;
-  int _letterId = 0;
+  int rowId = 0;
+  int letterId = 0;
 
-  static String game_message = "";
-  static String _game_guess = "";
-  static List<String> _word_list = [
+  String game_message = "";
+  String game_guess = "";
+  final List<String> _word_list = [
     "WORLD",
     "FIGHT",
     "BRAIN",
@@ -14,28 +16,28 @@ class WordleGameModel {
     "SPACE",
     "ROCK",
     "PAPER",
-    "SCISSORS",
-    "LIZARD",
+    "SCISS",
+    "LIZAD",
     "SPOCK",
     "ROBOT",
   ];
 
-  static const game_over = false;
+  bool game_over = false;
   // setting game
   static List<Letter> wordRow = List.generate(5, (index) => Letter("", 0));
   // setting gameboard
   List<List<Letter>> wordleBoard =
       List.generate(5, (index) => List.generate(5, (index) => Letter("", 0)));
   // game basic function
-  static void initGame() {
+  void initGame() {
     final random = Random();
     int index = random.nextInt(_word_list.length);
-    _game_guess = _word_list[index];
+    game_guess = _word_list[index];
   }
 
   // game insertion
   void insertWord(int i, Letter word) {
-    wordleBoard[_rowId][i] = word;
+    wordleBoard[rowId][i] = word;
   }
 
   bool checkWord(String word) {
