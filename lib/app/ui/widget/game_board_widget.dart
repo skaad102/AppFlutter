@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rutas_app/app/models/game_model.dart';
 
+import '../../service/bloc/key_bloc.dart';
+
 class GameBoard extends StatefulWidget {
-  WordleGameModel gameModel;
-  GameBoard(this.gameModel, {Key? key}) : super(key: key);
+  GameBoard({Key? key}) : super(key: key);
 
   @override
   State<GameBoard> createState() => _GameBoardState();
@@ -12,9 +14,11 @@ class GameBoard extends StatefulWidget {
 class _GameBoardState extends State<GameBoard> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children:
-          widget.gameModel.wordleBoard.map((e) => RowWordlRandom(e)).toList(),
+    final blocKey = context.read<KeyBloc>().state.gameModel;
+    return BlocBuilder<KeyBloc, KeyInitial>(
+      builder: (context, state) => Column(
+        children: blocKey!.wordleBoard.map((e) => RowWordlRandom(e)).toList(),
+      ),
     );
   }
 }

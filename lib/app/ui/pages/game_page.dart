@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rutas_app/app/models/game_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rutas_app/app/service/bloc/key_bloc.dart';
 import 'package:rutas_app/app/ui/widget/key_board_widget.dart';
 
 class GamePage extends StatefulWidget {
@@ -10,12 +11,10 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
-  final gameModel = WordleGameModel();
-
   @override
   void initState() {
+    context.read<KeyBloc>().iniciarModel();
     super.initState();
-    WordleGameModel.initGame();
   }
 
   @override
@@ -29,7 +28,7 @@ class _GamePageState extends State<GamePage> {
             children: [
               const Text('Wordle'),
               const SizedBox(height: 20),
-              KeyBoard(gameModel)
+              KeyBoard()
             ],
           ),
         ),
